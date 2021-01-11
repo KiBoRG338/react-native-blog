@@ -1,12 +1,51 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
-export default MainScreen = () => {
+import AppHeaderIcon from '../components/AppHeaderIcon';
+import Post from '../components/Post';
+import { DATA } from '../data';
+
+export default MainScreen = ({ navigation }) => {
+    const openPostHandler = (post) => {
+        navigation.navigate('Post', { 
+            postId: post.id, 
+            date: post.date, 
+            booked: post.booked 
+        })
+    }
+
     return (
-        <View style={styles.center}>
-            <Text>MainScreen</Text>
+        <View style={styles.wrapper}>
+            <FlatList 
+                data={DATA} 
+                keyExtractor={post => post.id.toString()}
+                renderItem={ ({ item }) => <Post post={item} onOpen={openPostHandler}/>}
+            />
         </View>
     )
+}
+
+MainScreen.navigationOptions = {
+    headerTitle: 'Мой блог',
+    headerRight: () => (
+        <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+            <Item 
+                title="Take photo" 
+                iconName='ios-camera' 
+                onPress={() => console.log('press photo')}
+            />
+        </HeaderButtons>
+    ),
+    headerLeft: () => (
+        <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+            <Item 
+                title="Toggle drawer" 
+                iconName='ios-menu' 
+                onPress={() => console.log('press drawer')}
+            />
+        </HeaderButtons>
+    ),
 }
 
 const styles = StyleSheet.create({
