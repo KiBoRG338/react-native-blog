@@ -1,10 +1,10 @@
-import React from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import React, { useEffect } from 'react';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { useDispatch, useSelector } from 'react-redux'
 
 import AppHeaderIcon from '../components/AppHeaderIcon';
-import Post from '../components/Post';
-import { DATA } from '../data';
+import PostList from '../components/PostList';
+import { loadPosts } from '../store/actions/post';
 
 export default MainScreen = ({ navigation }) => {
     const openPostHandler = (post) => {
@@ -15,25 +15,27 @@ export default MainScreen = ({ navigation }) => {
         })
     }
 
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(loadPosts())
+    }, [dispatch])
+
+    const allPosts = useSelector(state => state.post.allPosts)
+
     return (
-        <View style={styles.wrapper}>
-            <FlatList 
-                data={DATA} 
-                keyExtractor={post => post.id.toString()}
-                renderItem={ ({ item }) => <Post post={item} onOpen={openPostHandler}/>}
-            />
-        </View>
+        <PostList data={allPosts} onOpen={openPostHandler}/>
     )
 }
 
-MainScreen.navigationOptions = {
+MainScreen.navigationOptions = ({ navigation }) => ({
     headerTitle: 'Мой блог',
     headerRight: () => (
         <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
             <Item 
                 title="Take photo" 
                 iconName='ios-camera' 
-                onPress={() => console.log('press photo')}
+                onPress={() => navigation.push('Create')}
             />
         </HeaderButtons>
     ),
@@ -42,16 +44,8 @@ MainScreen.navigationOptions = {
             <Item 
                 title="Toggle drawer" 
                 iconName='ios-menu' 
-                onPress={() => console.log('press drawer')}
+                onPress={() => navigation.toggleDrawer()}
             />
         </HeaderButtons>
     ),
-}
-
-const styles = StyleSheet.create({
-    center: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    }
 })
