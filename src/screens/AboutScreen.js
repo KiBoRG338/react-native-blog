@@ -8,7 +8,7 @@ export default AboutScreen = () => {
     return (
         <View style={styles.center}>
             <Text>Это лучшее приложение для личных заметок.</Text>
-            <Text>Версия приложения <Text style={styles.version}>1.0.0</Text></Text>
+            <Text>Версия приложения <Text style={styles.version}>1.0.1</Text></Text>
         </View>
     )
 }
