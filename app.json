@@ -23,7 +23,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.fannestydev.self_blog_app",
+      "bundleIdentifier": "com.fannestydev.self-blog-app",
       "buildNumber": "1.0.1"
     },
     "android": {
